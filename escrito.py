@@ -13,12 +13,14 @@ def organizar_escritura(escritura):
     significado = escritura["significado"]
     origen = escritura["origen"]
     silabario = escritura["silabario"]
+    nivel = ""
     if es_nivel_1 and not es_nivel_2:
-        return f"La palabra {palabra} significa {significado}, pertenece al silabario {silabario} y es de origen {origen}"
+        nivel = "Nivel Básico A"
     elif es_nivel_2:
-        return f"{escritura} Nivel básico B"
+        nivel = "Nivel Básico B"
     else:
-        return f"{escritura} Nivel Avanzado"
+        nivel = "Nivel Avanzado"
+    return f"La palabra {palabra} significa {significado}, es de {nivel}, pertenece al silabario {silabario} y es de origen {origen}"
 
 for escritura in lista_escrituras:
     print(organizar_escritura(escritura))
