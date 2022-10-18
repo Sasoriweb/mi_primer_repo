@@ -2,8 +2,29 @@
 
 # 1.- Escribir un programa que pregunte al usuario su edad y muestre por pantalla todos los años que ha cumplido (desde 1 hasta su edad).
 
-# 2.- Escribir un programa que pida al usuario un número entero y muestre por pantalla un triángulo rectángulo como el de más abajo, de altura el número introducido.
 
+
+edad = input("Introduzca su edad: ")
+int_edad = int(edad) 
+cant_años = range(1,int_edad+1)
+
+for año in cant_años:
+    if año == 1:
+        print (f"El usuario cumplió 1 año") 
+    else: 
+        print(f"El usuario cumplió {año} años")
+
+# 2.- Escribir un programa que pida al usuario un número entero y muestre por pantalla un triángulo rectángulo como el de más abajo, de altura el número introducido.
+numero = input("Introduzca un número: ")
+int_numero = int(numero) 
+asteriscos = range(1,int_numero+1)
+
+for asterisco in asteriscos:
+    if asterisco == 1:
+        print (f"*") 
+    else:
+        print ("*" * 5 )
+    
 # *
 # **
 # ***
