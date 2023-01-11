@@ -23,7 +23,8 @@ for asterisco in asteriscos:
     if asterisco == 1:
         print (f"*") 
     else:
-        print ("*" * 5 )
+        print("*" * asterisco)
+
     
 # *
 # **
@@ -35,8 +36,31 @@ for asterisco in asteriscos:
 
 
 # 4.- Escribir un programa que almacene las asignaturas de un curso (por ejemplo Matemáticas, Física, Química, Historia y Lengua) en una lista, pregunte al usuario la nota que ha sacado en cada asignatura, y después las muestre por pantalla con el mensaje En <asignatura> has sacado <nota> donde <asignatura> es cada una des las asignaturas de la lista y <nota> cada una de las correspondientes notas introducidas por el usuario.
+asignaturas_1 = float(input("Ingrese la nota obtenida en la asignatura de Matemáticas: "))
+asignaturas_2 = float(input("Ingrese la nota obtenida en la asignatura de Física: "))
+asignaturas_3 = float(input("Ingrese la nota obtenida en la asignatura de Arte: "))
+asignaturas_4 = float(input("Ingrese la nota obtenida en la asignatura de Música: "))
+asignaturas_5 = float(input("Ingrese la nota obtenida en la asignatura de Lengua: "))
+
+asignatura = ["Matemáticas", "Física", "Arte", "Música", "Lengua"]
+calificacion = [asignaturas_1,asignaturas_2,asignaturas_3,asignaturas_4,asignaturas_5]
+
+
+for a,c in zip(asignatura, calificacion):
+    
+    print(f"Usted ha obtenido un {c} en {a}")
+
 
 # 5.- Escribir un programa que pida al usuario una palabra y muestre por pantalla si es un palíndromo.
+Introd = input("Escriba una palabra: ")
+
+palabra = Introd
+
+if list(palabra) == list(reversed(palabra)):
+    print("Esto es un palíndromo")
+
+else:
+    print("Esto no es un palíndromo")
 
 # 6.- Escribir un programa que pregunte por una muestra de números, separados por comas, los guarde en una lista y muestre por pantalla su media y desviación típica.
 
