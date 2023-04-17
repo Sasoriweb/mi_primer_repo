@@ -2,74 +2,77 @@ import json
 from datetime import datetime
 
 
-class Item:
-    def __init__(self, nombre, precio, cantidad):
-        self.nombre = nombre
-        self.precio = precio
-        self.cantidad = cantidad
+class CartItem:
+    def __init__(self, name, price, quantity):
+        if price < 0 or quantity < 0:
+            raise ValueError("El precio y la cantidad deben ser valores positivos")
+        self.name = name
+        self.price = price
+        self.quantity = quantity
 
-    def get_precio_total(self):
-        return self.precio * self.cantidad
+    def add_quantity(self, quantity):
+        if quantity < 0:
+            raise ValueError("La cantidad debe ser un valor positivo")
+        self.quantity += quantity
+
+    def to_dict(self):
+        return {"name": self.name, "price": self.price, "quantity": self.quantity}
 
 
-class CarritoDeCompras:
+class ShoppingCart:
     def __init__(self):
-        self.fecha = datetime.now()
+        self.date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         self.subtotal = 0
         self.total = 0
-        self.cantidad_items = 0
-        self.items = {}
+        self.items = []
 
-    def agregar_item(self, nombre, precio, cantidad):
-        item = Item(nombre, precio, cantidad)
-        self.items[nombre] = item
-        self.actualizar_totales()
-
-    def actualizar_totales(self):
-        self.subtotal = sum(item.get_precio_total() for item in self.items.values())
-        self.cantidad_items = sum(item.cantidad for item in self.items.values())
+    def add_item(self, item):
+        found = False
+        for i in self.items:
+            if i.name == item.name:
+                i.add_quantity(item.quantity)
+                found = True
+        if not found:
+            self.items.append(item)
+        self.subtotal += item.price * item.quantity
         self.total = self.subtotal
 
-    def guardar_en_archivo(self, archivo):
-        carrito_dict = {
-            "fecha": str(self.fecha),
+    def remove_item(self, item):
+        if item in self.items:
+            self.subtotal -= item.price * item.quantity
+            self.items.remove(item)
+        self.total = self.subtotal
+
+    def calculate_total(self):
+        self.total = self.subtotal
+
+    def save_to_json(self, filename):
+        data = {
+            "date": self.date,
             "subtotal": self.subtotal,
             "total": self.total,
-            "cantidad_items": self.cantidad_items,
-            "items": {},
+            "items": [i.to_dict() for i in self.items],
         }
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
 
-        for nombre, item in self.items.items():
-            item_dict = {"precio": item.precio, "cantidad": item.cantidad}
-            carrito_dict["items"][nombre] = item_dict
-
-        with open(archivo, "w") as f:
-            json.dump(carrito_dict, f, indent=4)
-
-    @classmethod
-    def cargar_desde_archivo(cls, archivo):
-        with open(archivo, "r") as f:
-            carrito_dict = json.load(f)
-
-        carrito = cls()
-        carrito.fecha = datetime.fromisoformat(carrito_dict["fecha"])
-        carrito.subtotal = carrito_dict["subtotal"]
-        carrito.total = carrito_dict["total"]
-        carrito.cantidad_items = carrito_dict["cantidad_items"]
-
-        for nombre, item_dict in carrito_dict["items"].items():
-            item = Item(nombre, item_dict["precio"], item_dict["cantidad"])
-            carrito.items[nombre] = item
-
-        return carrito
+    def load_from_json(self, filename):
+        with open(filename, "r") as f:
+            data = json.load(f)
+            self.date = data["date"]
+            self.subtotal = data["subtotal"]
+            self.total = data["total"]
+            self.items = [
+                CartItem(i["name"], i["price"], i["quantity"]) for i in data["items"]
+            ]
 
 
-carrito_nuevo = CarritoDeCompras()
-carrito_nuevo.agregar_item("Minna No Nihongo 1",29990, 1)
-carrito_nuevo.agregar_item("Minna No Nihongo 1",29990, 1)
-carrito_nuevo.agregar_item("Minna No Nihongo 1",29990, 1)
-carrito_nuevo.agregar_item("Minna No Nihongo 1",29990, 1)
-carrito_nuevo.agregar_item("Minna No Nihongo 1",29990, 1)
-carrito_nuevo.agregar_item("Minna No Nihongo 1",29990, 1)
-carrito_nuevo.actualizar_totales()
-carrito_nuevo.guardar_en_archivo("muchos_minna_no_nihongo.json")
+carrito_nuevo = ShoppingCart()
+carrito_nuevo.add_item(CartItem("Minna No Nihongo 1", 29990, 1))
+carrito_nuevo.add_item(CartItem("Minna No Nihongo 1", 29990, 1))
+carrito_nuevo.add_item(CartItem("Minna No Nihongo 1", 29990, 1))
+carrito_nuevo.add_item(CartItem("Minna No Nihongo 1", 29990, 1))
+carrito_nuevo.add_item(CartItem("Minna No Nihongo 1", 29990, 1))
+carrito_nuevo.add_item(CartItem("Minna No Nihongo 1", 29990, 1))
+carrito_nuevo.calculate_total()
+carrito_nuevo.save_to_json("muchos_minna_no_nihongo.json")

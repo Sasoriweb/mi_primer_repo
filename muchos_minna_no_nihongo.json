@@ -1,12 +1,12 @@
 {
-    "fecha": "2023-04-17 12:16:56.621474",
-    "subtotal": 29990,
-    "total": 29990,
-    "cantidad_items": 1,
-    "items": {
-        "Minna No Nihongo 1": {
-            "precio": 29990,
-            "cantidad": 1
+    "date": "17/04/2023 12:25:02",
+    "subtotal": 179940,
+    "total": 179940,
+    "items": [
+        {
+            "name": "Minna No Nihongo 1",
+            "price": 29990,
+            "quantity": 6
         }
-    }
+    ]
 }
